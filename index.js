@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const env = process.env
 
 const app = express()
-const serverport = 3000
+const serverport = process.env.PORT || 3000
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
