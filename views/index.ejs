@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="emailFormApp">
+  <head>
+    <meta charset="utf-8">
+    <title>Email Server</title>
+    <link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.7.8/angular.min.js"></script>
+  </head>
+  <body>
+    <div ng-controller="formController" class="container">
+      <form ng-submit="submitForm()">
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="form-group col-md-4">
+            <label for="to">To:</label>
+            <input ng-model="form.to" type="email" class="form-control" name="to">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="form-group col-md-4">
+            <label for="subject">Subject:</label>
+            <input ng-model="form.subject" type="text" class="form-control" name="subject">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"></div>
+            <div class="form-group col-md-4">
+              <label for="body">Body:</label>
+              <textarea ng-model="form.body" cols="5" rows="5"class="form-control" name="body"></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-4"></div>
+          <div class="form-group col-md-4">
+            <button type="submit" class="btn btn-success">Send</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script>
+      let emailFormApp = angular.module('emailFormApp', [])
+      emailFormApp.controller('formController', ($scope, $http) => {
+        $scope.originalForm = {
+          to: '',
+          subject: '',
+          body: ''
+        }
+
+        $scope.form = angular.copy($scope.originalForm)
+
+        $scope.submitForm = () => {
+          const onSuccess = function(data, status, headers, config) {
+            alert('Done!')
+            $scope.form = angular.copy($scope.originalForm)  
+          }
+
+          const onError = (data, status, headers, config) => {
+            alert('Nope, can\'t do!')
+          }
+
+          $http.post('/send', { formData: $scope.form })
+          .then(onSuccess)
+          .catch(onError)
+        }
+
+        $scope.resetForm = function() {
+          $scope.form = angular.copy($scope.originalForm)  
+        }
+      
+      })
+    </script>
+  </body>
+</html>
