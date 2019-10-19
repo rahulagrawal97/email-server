@@ -1,11 +1,11 @@
 const express = require('express')
-const path = require('path')
 const nodeMailer = require('nodemailer')
 const bodyParser = require('body-parser')
-require('dotenv').config();
+require('path')
+require('dotenv').config()
 
 const app = express()
-const serverport = process.env.PORT || 3000
+const serverport = process.env.PORT
 
 app.set('view engine', 'ejs')
 app.use(express.static('public'))
@@ -26,7 +26,7 @@ app.post('/send', (req, res) => {
     port: 465,
     secure: true,
     auth: {
-      user: process.env.EMAIL, // Add to .env file, use node.PROCESS.env to use sensitive data
+      user: process.env.EMAIL,
       pass: process.env.PASS
     },
     debug: true
